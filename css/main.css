@@ -19,5 +19,17 @@ btn {
 }
 
 .grid {
-    margin: 5% 0 5% 0;
+    margin: 5% 0 5% 20%;
+    cursor: pointer;
+}
+
+/* cells are alive */
+
+.alive {
+    background-color: black;
+}
+
+/* cells are dead */
+.dead {
+    background-color: white;
 }

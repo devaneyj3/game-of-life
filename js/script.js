@@ -8,6 +8,7 @@ function makeGrid(cols, rows) {
     let startBtn = document.createElement('btn')
     startBtn.className = 'start'
     startBtn.innerText = 'Start'
+    let column = ''
 
     let endBtn = document.createElement('btn')
     endBtn.className = 'end'
@@ -16,9 +17,10 @@ function makeGrid(cols, rows) {
         let row = document.createElement('div')
         row.className = 'row'
         for (c = 0; c <  cols; c++) {
-            let column = document.createElement("div");
-            column.className = 'col-xs'
-            column.innerText = (c + 1);
+            column = document.createElement("div");
+            column.className = `col-xs column r${r}c${c} dead`
+            configureColumn(column)
+            column.innerText = ' ';
             row.appendChild(column)
         }
         grid.appendChild(row)
@@ -26,19 +28,46 @@ function makeGrid(cols, rows) {
     container.appendChild(startBtn)
     container.appendChild(endBtn)
 };
+const configureColumn = (column) => {
+    column.addEventListener('click', (e) => {
+        // if you click on the cell its alive
+        // TODO: toggling would be better but for some reason I could not make that work
+        if( e.target.classList.contains('dead')) {
+            e.target.classList.remove('dead')
+            e.target.classList.add('alive')
+        } else {
+            e.target.classList.remove('alive')
+            e.target.classList.add('dead')
+        }
+    })
 
+}
+function storeColumnData() {
+    let column = document.getElementsByClassName('column')
+    let deadList = []
+    // store what cells are dead into array
+    for (let i = 0; i < column.length; i++) {
+        if(column[i].classList.contains('dead')) {
+            deadList.push(column[i].classList.item(2))
+        }
+    }
+    console.log(deadList)
+}
 makeGrid(16, 16);
+storeColumnData()
 
+// check the eight surrounding neighbors to see if they are alive or dead
+// loop through all columns to see what are alive and dead to store them in a data structure
 // 0 is dead, 1 is alive
-[[0, 1],[1,1]]
-[[1],[0],[1],[1]]
 
+// [[1],[0],[1],[1]]
 
-// # Cell objects or components that, at a minimum, should have:
-// # Properties
-// # current state: (alive, dead), (black, white)
-// # Clickable/Tappable:
-// # can be clicked to allow user to setup initial cell configuration
+//  1 is alive, 0 is dead
+// if(dataStructure[i] === 1 ) {
+//     // alive
+//     data
+// }
+
 // # should NOT be clickable while simulation is running
 // # Behaviors
 // # Toggle state functionality: switch between alive & dead either because user manually toggled cell before starting simulation or simulation is running and rules of life caused cell to change state
