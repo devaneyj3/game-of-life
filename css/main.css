@@ -1,10 +1,23 @@
 
+body {
+    margin: 1%;
+    display: flex;
+    justify-content: center;
+}
+.main {
+    text-align: center;
+}
 btn {
     border: 1px solid black;
-    padding:5px
+    padding:5px;
+    margin: 1%;
 }
 
 .col-xs {
     padding:10px;
     border: 1px solid black
+}
+
+.grid {
+    margin: 5% 0 5% 0;
 }
