@@ -11,6 +11,11 @@ btn {
     border: 1px solid black;
     padding:5px;
     margin: 1%;
+    cursor: pointer;
+}
+
+btn:hover {
+    background-color:gray
 }
 
 .col-xs {
@@ -32,4 +37,9 @@ btn {
 /* cells are dead */
 .dead {
     background-color: white;
+}
+
+/* make element unclickable on start */
+.no_click {
+    pointer-events: none
 }

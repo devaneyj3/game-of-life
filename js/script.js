@@ -3,7 +3,6 @@ let grid = document.querySelector('.grid')
 
 //make grid
 
-
 function makeGrid(cols, rows) {
     let startBtn = document.createElement('btn')
     startBtn.className = 'start'
@@ -13,6 +12,12 @@ function makeGrid(cols, rows) {
     let endBtn = document.createElement('btn')
     endBtn.className = 'end'
     endBtn.innerText = 'End'
+    
+    let clearBtn = document.createElement('btn')
+    clearBtn.className = 'clear'
+    clearBtn.innerText = 'Clear'
+
+    
     for (let r = 0; r < rows; r++) {
         let row = document.createElement('div')
         row.className = 'row'
@@ -27,6 +32,7 @@ function makeGrid(cols, rows) {
     };
     container.appendChild(startBtn)
     container.appendChild(endBtn)
+    container.appendChild(clearBtn)
 };
 const configureColumn = (column) => {
     column.addEventListener('click', (e) => {
@@ -40,15 +46,36 @@ const configureColumn = (column) => {
             e.target.classList.add('dead')
         }
     })
-
 }
-
 function startGame() { 
     let startBtn = document.querySelector('.start')
+    let endBtn = document.querySelector('.end')
+    let column = document.getElementsByClassName('column')
+    let clearBtn = document.querySelector('.clear')
     let edit = true
+    let generationInfo = document.createElement('span')
+    generationInfo.className = 'generation'
+    generationInfo.innerText = 'Generation 0'
     startBtn.addEventListener('click', (e) => {
+        // make cell unclicked when you hit start button
+        for (let i = 0; i < column.length; i++) {
+            column[i].classList.add('no_click')
+        }
         storeColumnData()
+        // # Text to display current generation # being displayed
+        container.appendChild(generationInfo)
     })
+    // endBtn.addEventListener('click', (e) => {
+
+    // })
+    // clear classes on clear button click
+    clearBtn.addEventListener('click', (e) => {
+        for (let i = 0; i < column.length; i++) {
+            column[i].classList.remove('alive')
+            column[i].classList.remove('no_click')
+        }
+    })
+
     console.log(edit)
 }
 function storeColumnData() {
@@ -63,7 +90,7 @@ function storeColumnData() {
         } else if (column[i].classList.contains('alive')) {
             console.log('here')
             aliveList.push(column[i].classList.item(2))
-        }
+        } 
     }  
     console.log('deadList', deadList)
     console.log('aliveList', aliveList)
@@ -71,25 +98,13 @@ function storeColumnData() {
 makeGrid(16, 16);
 startGame()
 // check the eight surrounding neighbors to see if they are alive or dead
-// loop through all columns to see what are alive and dead to store them in a data structure
-// 0 is dead, 1 is alive
 
-// [[1],[0],[1],[1]]
+// Behaviors
 
-//  1 is alive, 0 is dead
-// if(dataStructure[i] === 1 ) {
-//     // alive
-//     data
-// }
-
-// # should NOT be clickable while simulation is running
-// # Behaviors
 // # Toggle state functionality: switch between alive & dead either because user manually toggled cell before starting simulation or simulation is running and rules of life caused cell to change state
-// # An appropriate data structure to hold a grid of cells that is at least 25x25. Go as big as you want.
-// # Text to display current generation # being displayed
+
 // # Utilize a timeout function to build the next generation of cells & update the display at the chosen time interval
-// # Button(s) that start & stop the animation
-// # Button to clear the grid
+
 // # Write an algorithm that:
 
 // # Implements the following basic steps:
@@ -102,3 +117,17 @@ startGame()
 // # Breaks down above steps into appropriate sub-tasks implemented with helper functions to improve readability
 // # Uses double buffering to update grid with next generation.
 // # Does something well-documented with the edge of the grid. (e.g. wrap around to the far side--most fun!--or assumes all edge cells are permanently dead.)
+
+// If a cell is ON and has fewer than two neighbors that are ON, it turns OFF
+// loop throug list
+    // if cell[i] is alive and > 2 neighbor == on:
+        // turn off
+// If a cell is ON and has either two or three neighbors that are ON, it remains ON.
+    // if cell[i] is alive and at least 2 neighbor are on:
+        // cell[i] == 'alive'
+// If a cell is ON and has more than three neighbors that are ON, it turns OFF.
+    // if cell[i] is alive and < 3 neighbor are on:
+    //     cell[i] == 'dead'
+// If a cell is OFF and has exactly three neighbors that are ON, it turns ON.
+    // if cell[i] is dead and 3 neighbor are on:
+    //     cell[i] == 'alive'
