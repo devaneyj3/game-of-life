@@ -42,20 +42,34 @@ const configureColumn = (column) => {
     })
 
 }
+
+function startGame() { 
+    let startBtn = document.querySelector('.start')
+    let edit = true
+    startBtn.addEventListener('click', (e) => {
+        storeColumnData()
+    })
+    console.log(edit)
+}
 function storeColumnData() {
     let column = document.getElementsByClassName('column')
     let deadList = []
+    let aliveList = []      
     // store what cells are dead into array
     for (let i = 0; i < column.length; i++) {
         if(column[i].classList.contains('dead')) {
             deadList.push(column[i].classList.item(2))
+            // if colunm is clicked then it is alive and add to alive list
+        } else if (column[i].classList.contains('alive')) {
+            console.log('here')
+            aliveList.push(column[i].classList.item(2))
         }
-    }
-    console.log(deadList)
+    }  
+    console.log('deadList', deadList)
+    console.log('aliveList', aliveList)
 }
 makeGrid(16, 16);
-storeColumnData()
-
+startGame()
 // check the eight surrounding neighbors to see if they are alive or dead
 // loop through all columns to see what are alive and dead to store them in a data structure
 // 0 is dead, 1 is alive
