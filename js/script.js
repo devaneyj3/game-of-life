@@ -1,38 +1,51 @@
 let container = document.querySelector('.main')
 let grid = document.querySelector('.grid')
 
+let rows = 16
+let cols = 16
+
 //make grid
 
-function makeGrid(cols, rows) {
-    let startBtn = document.createElement('btn')
-    startBtn.className = 'start'
-    startBtn.innerText = 'Start'
+
+function make2DArray(cols, rows) {
+    let arr = new Array(cols)
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = new Array(rows)
+    }
+    return arr
+}
+function makeCellsAliveOrDead() {
+    // TODO: How do we determine neighbors
+    let universe = make2DArray(cols, rows)
+    // store what cells are dead into array
+    for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+            // 0 signifies a dead cell
+            // 1 signifies an alive cell
+            universe[i][j] = Math.floor(Math.random() * 2)
+        }
+    } 
+    return universe
+}
+function generateUIGrid(universe) {
     let column = ''
-
-    let endBtn = document.createElement('btn')
-    endBtn.className = 'end'
-    endBtn.innerText = 'End'
-    
-    let clearBtn = document.createElement('btn')
-    clearBtn.className = 'clear'
-    clearBtn.innerText = 'Clear'
-
-    
-    for (let r = 0; r < rows; r++) {
+    for (let i = 0; i < universe.length; i++) {
         let row = document.createElement('div')
         row.className = 'row'
-        for (c = 0; c <  cols; c++) {
+        for (let j = 0; j < universe[i].length; j++) {
             column = document.createElement("div");
-            column.className = `col-xs column r${r}c${c} dead`
+            if (universe[i][j] === 1) {
+                column.className = `col-xs column r${i}c${j} alive`
+            } else {
+                column.className = `col-xs column r${i}c${j} dead`
+            }
             configureColumn(column)
-            column.innerText = ' ';
+            column.innerText = ' '
             row.appendChild(column)
+            console.log(universe[i][j])
         }
         grid.appendChild(row)
-    };
-    container.appendChild(startBtn)
-    container.appendChild(endBtn)
-    container.appendChild(clearBtn)
+    }
 };
 const configureColumn = (column) => {
     column.addEventListener('click', (e) => {
@@ -53,17 +66,11 @@ function startGame() {
     let column = document.getElementsByClassName('column')
     let clearBtn = document.querySelector('.clear')
     let edit = true
-    let generationInfo = document.createElement('span')
-    generationInfo.className = 'generation'
-    generationInfo.innerText = 'Generation 0'
     startBtn.addEventListener('click', (e) => {
         // make cell unclicked when you hit start button
         for (let i = 0; i < column.length; i++) {
             column[i].classList.add('no_click')
         }
-        storeColumnData()
-        // # Text to display current generation # being displayed
-        container.appendChild(generationInfo)
     })
     // endBtn.addEventListener('click', (e) => {
 
@@ -75,30 +82,11 @@ function startGame() {
             column[i].classList.remove('no_click')
         }
     })
+}
 
-    console.log(edit)
-}
-function storeColumnData() {
-    let column = document.getElementsByClassName('column')
-    // TODO: How do we determine neighbors
-    let universe = []     
-    // store what cells are dead into array
-    for (let i = 0; i < column.length; i++) {
-        if(column[i].classList.contains('dead')) {
-            // universe.push(column[i].classList.item(2))
-            // 0 signifies a dead cell
-            universe.push(0)
-            // if colunm is clicked then it is alive and add to alive list
-        } else if (column[i].classList.contains('alive')) {
-            // universe.push(column[i].classList.item(2))
-            // 1 signifies an alive cell
-            universe.push(1)
-        } 
-    }  
-    console.log('universe', universe)
-}
-makeGrid(16, 16);
-startGame()
+universe = makeCellsAliveOrDead()
+generateUIGrid(universe);
+startGame();
 
 // Behaviors
 
