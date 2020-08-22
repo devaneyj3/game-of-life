@@ -80,30 +80,38 @@ function startGame() {
 }
 function storeColumnData() {
     let column = document.getElementsByClassName('column')
-    let deadList = []
-    let aliveList = []      
+    // TODO: How do we determine neighbors
+    let universe = []     
     // store what cells are dead into array
     for (let i = 0; i < column.length; i++) {
         if(column[i].classList.contains('dead')) {
-            deadList.push(column[i].classList.item(2))
+            // universe.push(column[i].classList.item(2))
+            // 0 signifies a dead cell
+            universe.push(0)
             // if colunm is clicked then it is alive and add to alive list
         } else if (column[i].classList.contains('alive')) {
-            console.log('here')
-            aliveList.push(column[i].classList.item(2))
+            // universe.push(column[i].classList.item(2))
+            // 1 signifies an alive cell
+            universe.push(1)
         } 
     }  
-    console.log('deadList', deadList)
-    console.log('aliveList', aliveList)
+    console.log('universe', universe)
 }
 makeGrid(16, 16);
 startGame()
-// check the eight surrounding neighbors to see if they are alive or dead
 
 // Behaviors
 
 // # Toggle state functionality: switch between alive & dead either because user manually toggled cell before starting simulation or simulation is running and rules of life caused cell to change state
 
 // # Utilize a timeout function to build the next generation of cells & update the display at the chosen time interval
+
+// function changeGeneration() {
+//     setTimeout(function () {
+//         // display new generation grid after cells change between dead and alive
+//         // increment geration counter by one
+//     },3000)
+// }
 
 // # Write an algorithm that:
 
@@ -118,16 +126,34 @@ startGame()
 // # Uses double buffering to update grid with next generation.
 // # Does something well-documented with the edge of the grid. (e.g. wrap around to the far side--most fun!--or assumes all edge cells are permanently dead.)
 
-// If a cell is ON and has fewer than two neighbors that are ON, it turns OFF
-// loop throug list
-    // if cell[i] is alive and > 2 neighbor == on:
-        // turn off
-// If a cell is ON and has either two or three neighbors that are ON, it remains ON.
-    // if cell[i] is alive and at least 2 neighbor are on:
-        // cell[i] == 'alive'
-// If a cell is ON and has more than three neighbors that are ON, it turns OFF.
-    // if cell[i] is alive and < 3 neighbor are on:
-    //     cell[i] == 'dead'
-// If a cell is OFF and has exactly three neighbors that are ON, it turns ON.
-    // if cell[i] is dead and 3 neighbor are on:
-    //     cell[i] == 'alive'
+// check the eight surrounding neighbors to see if they are alive or dead
+// loop through list
+    // If a cell is ON and has fewer than two neighbors that are ON, it turns OFF
+        // if cell[i] is alive and > 2 neighbor == on:
+            // turn cell[i] = dead
+    // If a cell is ON and has either two or three neighbors that are ON, it remains ON.
+        // if cell[i] is alive and at least 2 neighbor are on:
+            // cell[i] == 'alive'
+    // If a cell is ON and has more than three neighbors that are ON, it turns OFF.
+        // if cell[i] is alive and < 3 neighbor are on:
+        //     cell[i] == 'dead'
+    // If a cell is OFF and has exactly three neighbors that are ON, it turns ON.
+        // if cell[i] is dead and 3 neighbor are on:
+        //     cell[i] == 'alive'
+
+            // how do we know what the 
+            // let universe = [[1,0,0,1] // universe[0][0]
+            //                 [0,1,1,1]]// universe[1][1]
+        //     universe[1][1] = 0
+        // if(cell[i] == 1) {
+        //     cell[i] = alive
+        // }
+        // if(cell[i] == 0) {
+        //     cell[i] = dead
+        // }
+        // if cell[i -1] 
+        // cell[i] = 
+        // [
+        //     [0,0,1,1]
+        //     [0,1,0,1]
+        // ]     
