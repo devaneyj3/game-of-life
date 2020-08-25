@@ -92,6 +92,8 @@ function nextGenGrid(arr) {
                 }
             })
         }
+        // make UI updates
+        generateUIGrid(arr)
     }
 }
 window.onload = () => {
