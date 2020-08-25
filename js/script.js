@@ -1,11 +1,11 @@
-let startBtn = document.querySelector('.start')
-let endBtn = document.querySelector('.end')
-let column = document.getElementsByClassName('column')
-let clearBtn = document.querySelector('.clear')
 let container = document.querySelector('.main')
 let grid = document.querySelector('.grid')
 
 let rows = 16
+let startBtn = document.querySelector('.start')
+let endBtn = document.querySelector('.end')
+let column = document.getElementsByClassName('column')
+let clearBtn = document.querySelector('.clear')
 let cols = 16
 
 //make grid
@@ -18,8 +18,7 @@ function make2DArray(cols, rows) {
     }
     return arr
 }
-function produceGrid() {
-    // TODO: How do we determine neighbors
+function randomGrid() {
     let universe = make2DArray(cols, rows)
     // store what cells are dead into array
     for (let i = 0; i < cols; i++) {
@@ -29,10 +28,10 @@ function produceGrid() {
             universe[i][j] = Math.floor(Math.random() * 2)
         }
     } 
-    // generate the UI Grid
-    generateUIGrid(universe)
     return universe
 }
+
+// generate the UI Grid
 function generateUIGrid(universe) {
     let column = ''
     for (let i = 0; i < universe.length; i++) {
@@ -46,34 +45,21 @@ function generateUIGrid(universe) {
             } else {
                 column.style.backgroundColor = 'white'
             }
-            configureColumn(column)
+            // configureColumn(column)
             column.innerText = ' '
             row.appendChild(column)
         }
         grid.appendChild(row)
     }
+    return grid
+    // TODO: how do I replace this grid with the new generation
 };
 
-// user clicking the column
-const configureColumn = (column) => {
-    column.addEventListener('click', (e) => {
-        // if you click on the cell its alive
-        // TODO: toggling would be better but for some reason I could not make that work
-        if( e.target.classList.contains('dead')) {
-            e.target.classList.remove('dead')
-            e.target.classList.add('alive')
-        } else {
-            e.target.classList.remove('alive')
-            e.target.classList.add('dead')
-        }
-    })
-}
 
 // Why do I get an infinite loop
-function simulation(arr) {
-    arr = produceGrid()
-    let arrayCopy = Array.from(arr)
-    console.log(arrayCopy)
+function nextGenGrid(arr) {
+    // this function make a grid for the next generation
+    console.log(`the arr in nextGenGrid is ${arr}`)
     let operations = [
         [0, 1],
         [0, -1],
@@ -85,10 +71,11 @@ function simulation(arr) {
         [+1, +1]
     ]
     // row 
-    for (let i = 0; i < arrayCopy.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         // column
-        for (let j = 0; j < arrayCopy[i].length; j++) {
+        for (let j = 0; j < arr[i].length; j++) {
             let neighbors = 0
+            // console.log(`cell at ${i}:${j} is, ${arr[i][j]}`)
             operations.forEach(([x, y]) => {
                 let newI = x + j;
                 let newJ = y + j
@@ -106,42 +93,55 @@ function simulation(arr) {
             })
         }
     }
-    setTimeout(() => {
-        simulation()
-    },1000)
 }
-function startGame() { 
-    produceGrid()
+window.onload = () => {
+    let randomArr = randomGrid()
+    generateUIGrid(randomArr)
+
     startBtn.addEventListener('click', (e) => {
         // run computer geration grid
-        simulation()
+        // TODO: conect the update grid to the UI grid
+        setTimeout(nextGenGrid(randomArr), 1000)
         // make cell unclicked when you hit start button
         for (let i = 0; i < column.length; i++) {
             column[i].classList.add('no_click')
         }
     })
-    // endBtn.addEventListener('click', (e) => {
-
-    // })
-    // clear classes on clear button click
-    clearBtn.addEventListener('click', (e) => {
-        for (let i = 0; i < column.length; i++) {
-            column[i].classList.remove('alive')
-            column[i].classList.remove('no_click')
-        }
-    })
 }
 
-
-startGame();
-
-// Behaviors
-
-// # Toggle state functionality: switch between alive & dead either because user manually toggled cell before starting simulation or simulation is running and rules of life caused cell to change state
-
-// # Utilize a timeout function to build the next generation of cells & update the display at the chosen time interval
-
-// function changeGeneration() {
+    // // endBtn.addEventListener('click', (e) => {
+        
+    //     // })
+    //     // clear classes on clear button click
+    //     clearBtn.addEventListener('click', (e) => {
+    //         for (let i = 0; i < column.length; i++) {
+    //             column[i].classList.remove('alive')
+    //             column[i].classList.remove('no_click')
+    //         }
+    //     })
+    // }
+    
+    // // user clicking the column
+    // const configureColumn = (column) => {
+    //     column.addEventListener('click', (e) => {
+    //         // if you click on the cell its alive
+    //         // TODO: toggling would be better but for some reason I could not make that work
+    //         if( e.target.classList.contains('dead')) {
+    //             e.target.classList.remove('dead')
+    //             e.target.classList.add('alive')
+    //         } else {
+    //             e.target.classList.remove('alive')
+    //             e.target.classList.add('dead')
+    //         }
+    //     })
+    // }
+    // Behaviors
+    
+    // # Toggle state functionality: switch between alive & dead either because user manually toggled cell before starting simulation or simulation is running and rules of life caused cell to change state
+    
+    // # Utilize a timeout function to build the next generation of cells & update the display at the chosen time interval
+    
+    // function changeGeneration() {
 //     setTimeout(function () {
 //         // display new generation grid after cells change between dead and alive
 //         // increment geration counter by one
