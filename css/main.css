@@ -28,17 +28,6 @@ btn:hover {
     cursor: pointer;
 }
 
-/* cells are alive */
-
-.alive {
-    background-color: black;
-}
-
-/* cells are dead */
-.dead {
-    background-color: white;
-}
-
 /* make element unclickable on start */
 .no_click {
     pointer-events: none

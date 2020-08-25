@@ -1,3 +1,7 @@
+let startBtn = document.querySelector('.start')
+let endBtn = document.querySelector('.end')
+let column = document.getElementsByClassName('column')
+let clearBtn = document.querySelector('.clear')
 let container = document.querySelector('.main')
 let grid = document.querySelector('.grid')
 
@@ -14,7 +18,7 @@ function make2DArray(cols, rows) {
     }
     return arr
 }
-function makeCellsAliveOrDead() {
+function produceGrid() {
     // TODO: How do we determine neighbors
     let universe = make2DArray(cols, rows)
     // store what cells are dead into array
@@ -25,6 +29,8 @@ function makeCellsAliveOrDead() {
             universe[i][j] = Math.floor(Math.random() * 2)
         }
     } 
+    // generate the UI Grid
+    generateUIGrid(universe)
     return universe
 }
 function generateUIGrid(universe) {
@@ -34,10 +40,11 @@ function generateUIGrid(universe) {
         row.className = 'row'
         for (let j = 0; j < universe[i].length; j++) {
             column = document.createElement("div");
+            column.className = `col-xs cell${i}:${j}`
             if (universe[i][j] === 1) {
-                column.className = `col-xs column r${i}c${j} alive`
+                column.style.backgroundColor = 'black'
             } else {
-                column.className = `col-xs column r${i}c${j} dead`
+                column.style.backgroundColor = 'white'
             }
             configureColumn(column)
             column.innerText = ' '
@@ -61,13 +68,53 @@ const configureColumn = (column) => {
         }
     })
 }
+
+// Why do I get an infinite loop
+function simulation(arr) {
+    arr = produceGrid()
+    let arrayCopy = Array.from(arr)
+    console.log(arrayCopy)
+    let operations = [
+        [0, 1],
+        [0, -1],
+        [0, +1],
+        [1, -1],
+        [1, +1],
+        [+1, -1],
+        [+1, 1],
+        [+1, +1]
+    ]
+    // row 
+    for (let i = 0; i < arrayCopy.length; i++) {
+        // column
+        for (let j = 0; j < arrayCopy[i].length; j++) {
+            let neighbors = 0
+            operations.forEach(([x, y]) => {
+                let newI = x + j;
+                let newJ = y + j
+                // check the bounds
+                if(newI >= 0  && newI < arr.length && newJ >= 0 && newJ < arr[i].length) {
+                    neighbors += arr[newI][newJ]
+                    // console.log(`neighbor value for ${i}:${j} are ${neighbors}`)
+                }
+                if(neighbors < 2 || neighbors > 3) {
+                    // console.log(`cell at ${i}:${j} has less than 2 neighbors on or more than 3 neighbors on`)
+                    arr[i][j] = 0
+                } else if (arr[i][j] === 0 && neighbors === 3) {
+                    arr[i][j] = 1
+                }
+            })
+        }
+    }
+    setTimeout(() => {
+        simulation()
+    },1000)
+}
 function startGame() { 
-    let startBtn = document.querySelector('.start')
-    let endBtn = document.querySelector('.end')
-    let column = document.getElementsByClassName('column')
-    let clearBtn = document.querySelector('.clear')
-    let edit = true
+    produceGrid()
     startBtn.addEventListener('click', (e) => {
+        // run computer geration grid
+        simulation()
         // make cell unclicked when you hit start button
         for (let i = 0; i < column.length; i++) {
             column[i].classList.add('no_click')
@@ -85,97 +132,7 @@ function startGame() {
     })
 }
 
-function toggleDeadAlive(arr) {
-    // row 
-    for (let i = 0; i < arr.length; i++) {
-        // console.log('row', arr[i])x
-        // column
-        for (let j = 0; j < arr[i].length; j++) {
-            console.log(`cell at ${i}:${j} is, ${arr[i][j]}`)
-            // row before the current cell we're checking has three dead neighbors
-            if(arr[i - 1] === undefined  ) {
-                neighbor += 0
-            } else {
 
-            }
-
-            // If a cell is ON and has fewer than two neighbors that are ON, it turns OFF
-        // if cell[i] is alive and > 2 neighbor == on:
-            // turn cell[i] = dead
-            while neighbor_alive < 2
-            if(cell[i][j] === 1) {
-                // cell[i- 1][j-1] = 1
-                    // neighbor_alive += 1
-                    // cell[i-1][j]  = 1
-                    // neighbor_alive += 1
-                    // cell[i-1][j+1] = 1
-                    // neighbor_alive += 1
-                    // cell[i][j-1] = 1,
-                    // neighbor_alive += 1
-                    // cell[i][j+1] = 1,
-                    // neighbor_alive += 1
-                    // cell[i+1][j-1] = 1,
-                    // neighbor_alive += 1
-                    // cell[i+1][j] = 1,
-                    // neighbor_alive += 1
-                    // cell[i+1][j+1] = 1,
-                    // neighbor_alive += 1
-            }
-            
-            // If a cell is OFF and has exactly three neighbors that are ON, it turns ON.
-            
-            // while neighbors_alive < 3
-                if(cell[i][j] === 0) {
-                    // if cell[i] is dead and 3 neighbor are on:
-                    //     cell[i] == 'alive'       
-                    // cell[i- 1][j-1] = 1
-                    // neighbor_alive += 1
-                    // cell[i-1][j]  = 1
-                    // neighbor_alive += 1
-                    // cell[i-1][j+1] = 1
-                    // neighbor_alive += 1
-                    // cell[i][j-1] = 1,
-                    // neighbor_alive += 1
-                    // cell[i][j+1] = 1,
-                    // neighbor_alive += 1
-                    // cell[i+1][j-1] = 1,
-                    // neighbor_alive += 1
-                    // cell[i+1][j] = 1,
-                    // neighbor_alive += 1
-                    // cell[i+1][j+1] = 1,
-                    // neighbor_alive += 1
-                }
-        }
-
-        let operations = [
-        ]
-        console.log(operations)
-    }
-    // check the eight surrounding neighbors to see if they are alive or dead
-// loop through list
-    // If a cell is ON and has either two or three neighbors that are ON, it remains ON.
-        // if cell[i] is alive and at least 2 neighbor are on:
-            // cell[i] == 'alive'
-    // If a cell is ON and has more than three neighbors that are ON, it turns OFF.
-        // if cell[i] is alive and < 3 neighbor are on:
-        //     cell[i] == 'dead'
-        // if(cell[i] == 1) {
-        //     cell[i] = alive
-        // }
-        // if(cell[i] == 0) {
-        //     cell[i] = dead
-        // }
-        // if cell[i -1] 
-        // cell[i] = 
-        // [
-        //     [0,0,1,1]
-        //     [0,1,0,1]
-        // ]     
-}
-
-universe = makeCellsAliveOrDead()
-generateUIGrid(universe);
-toggleDeadAlive(universe)
 startGame();
 
 // Behaviors
