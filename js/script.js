@@ -21,13 +21,25 @@ function buildGrid() {
 }
 
 let grid = buildGrid()
-// requestAnimationFrame(update)
+// setInterval(() => {
+    update()
+// }, 1000)
+//     startBtn.addEventListener('click', (e) => {
+//         // make cell unclicked when you hit start button
+//         for (let i = 0; i < column.length; i++) {
+//             column[i].classList.add('no_click')
+//         }
+//     })
+// }
 
-// function update() {
+function update() {
+    // the bug is in next gen grid
     grid = nextGenGrid(grid)
     renderGrid(grid)
-    //     requestAnimationFrame(update)
-// }
+    // setInterval(() => {
+    //     update()
+    // }, 1000)
+}
 
 function renderGrid(grid) {
     for (let col = 0; col < grid.length; col++) {
@@ -43,22 +55,20 @@ function renderGrid(grid) {
     }
 }
 
-// function makeNew2dArray() {
+function makeNew2dArray(cols, row, grid) {
 
-//     let newArray = new Array(grid.length)
-//     for (let col = 0; col < grid.length; col++) {
-
-//         newArray[col] = new Array()
-//         for (let row = 0; row < grid[col].length; row++) {
-//         }
-//     }
-// }
+    let newArray = new Array(cols)
+    for (let i = 0; i < grid.length; i++) {
+        newArray[cols] = new Array(row)
+    }
+    return newArray
+}
+// this function make a grid for the next generation
 function nextGenGrid(grid) {
-    // this function make a grid for the next generation
-    console.log('initial array', grid)
-    // let nextGen = new Array(grid.length)
-    let nextGen = Array.from(grid, () => new Array(grid.length))
-    console.log(nextGen)
+    console.table(grid)
+
+    let nextGen = grid.map(array => [...array])
+    console.table(nextGen)
     for (let col = 0; col < grid.length; col++) {
         for (let row = 0; row < grid[col].length; row++) {
             let cell = grid[col][row]
@@ -73,49 +83,48 @@ function nextGenGrid(grid) {
                     const x_cell = col + i
                     const y_cell = row + j
 
+                    // checking if we it checks outside of the bounds of the grid 
+                    // TODO: not counting neihbors correctly
                     if( x_cell >= 0 && y_cell >=0 && x_cell < col && y_cell < row) {
-                        const currentNeighbor = grid[col + i][row + j]
+                        // say that neighbor is dead
+                        console.log(`\nchecking cell ${cell}`)
+                        let currentNeighbor = grid[x_cell][y_cell]
+                        console.log(`ncurrent neighbor is`, currentNeighbor)
                         numNeighbors += currentNeighbor
-                        // console.log(numNeighbors)
-                    }
+                        console.log(`numNeighbors is ${numNeighbors}\n`)
+                    } 
                 }
             }
+
+            // 
+            // Any live cell with fewer than two live neighbours dies, as if by underpopulation.
             if(cell === 1 & numNeighbors < 2) {
-                // console.log(`cell at ${i}:${j} has less than 2 neighbors on or more than 3 neighbors on`)
-                console.log(cell)
+                // console.log(`cell at ${col}:${row} has less than 2 neighbors on or more than 3 neighbors on`)
                 nextGen[col][row] = 0
-            } else if (cell=== 1 && numNeighbors > 3) {
-                console.log(cell)
-                nextGen[col][row] = 0
-            } else if (cell === 0 && numNeighbors === 3) {
+                // Any live cell with two or three live neighbours lives on to the next generation.
+            } else if (cell=== 1 && numNeighbors === 2 || numNeighbors === 3) {
+                // console.log(`cell at ${col}:${row} has less than 2 neighbors on or more than 3 neighbors on`)
                 nextGen[col][row] = 1
-                console.log(cell)
+                
+                // Any live cell with more than three live neighbours dies, as if by overpopulation.
+                // TODO: this is where our bug lies
+            } else if (cell === 1 && numNeighbors > 3) {
+                console.log(`cell at ${col}:${row} has less than 2 neighbors on or more than 3 neighbors on`)
+                nextGen[col][row] = 1
+                // console.log(nextGen)
             }
+            // Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+            else if (cell === 0 && numNeighbors === 3) {
+                console.log(`cell at ${col}:${row} has less than 2 neighbors on or more than 3 neighbors on`)
+                nextGen[col][row] = 1
+                // console.log(nextGen)
+            }
+        
         }
     }
+    console.table('next gen grid after modification',nextGen)
     return nextGen
 }
-// }
-// window.onload = () => {
-//     randomGrid()
-//     generateUIGrid(universe)
-
-
-//     startBtn.addEventListener('click', (e) => {
-//         // run computer geration grid
-//         // TODO: conect the update grid to the UI grid
-//         let updatedArray = nextGenGrid()
-//         console.log('new array will be', updatedArray)
-//         // make UI updates
-//         setTimeout(() => {
-//             generateUIGrid(updatedArray)
-//         }, 1000)
-//         // make cell unclicked when you hit start button
-//         for (let i = 0; i < column.length; i++) {
-//             column[i].classList.add('no_click')
-//         }
-//     })
-// }
 
 //     // // endBtn.addEventListener('click', (e) => {
         
