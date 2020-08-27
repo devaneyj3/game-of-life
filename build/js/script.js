@@ -17,7 +17,7 @@ let cols = 16
 let cleared = false
 let ended = false
 
-
+let generation = 0
 function buildGrid() {
     return new Array(cols).fill(null)
     .map(() => new Array(rows).fill(null)
@@ -27,25 +27,28 @@ function buildGrid() {
 
 let grid = buildGrid()
 renderGrid(grid)
-
+// if I hit the clear button
+let incrementGeneration
 // start animating on click
 startBtn.addEventListener('click', (e) => {
-    console.log(ended)
-    requestAnimationFrame(update)
-    // if I hit the clear button
-    if(cleared) {
-        grid = buildGrid()
-        renderGrid(grid)
-    }
+    incrementGeneration = setInterval(displayNextGen, 500)
     // make cell unclicked when you hit start button
     // for (let i = 0; i < column.length; i++) {
         //     column[i].classList.add('no_click')
         // }
 })
 
+function displayNextGen() {
+        grid = nextGenGrid(grid)
+        renderGrid(grid)
+        // TODO: generation incrementer doesn't stop when the animation does
+        generation += 1
+        generation_tag.innerText = `Generation ${generation}`
+        console.log(`generation in the update function`,generation)
+}
+
 endBtn.addEventListener('click', (e) => {
     ended = true
-    console.log(ended)
 })
     
 clearBtn.addEventListener('click', (e) => {
@@ -53,8 +56,17 @@ clearBtn.addEventListener('click', (e) => {
     let clearedGrid = clearGrid(grid)
     renderGrid(clearedGrid)
     cleared = true
-    generation = 0
+    clearInterval(incrementGeneration)
+    resetTimer()
 })
+
+function resetTimer() {
+    generation = 0
+    generation_tag.innerText = `Generation ${generation}`
+    console.log(`generation in the update function`,generation)
+
+    clearInterval(incrementGeneration)
+}
         // for (let i = 0; i < column.length; i++) {
             //     column[i].classList.remove('alive')
             //     column[i].classList.remove('no_click')
@@ -68,18 +80,13 @@ function clearGrid(grid) {
     }
     return grid
 }
-function update() {
-    let generation = 0
-    grid = nextGenGrid(grid)
-    renderGrid(grid)
-    // TODO: generation incrementer doesn't stop when the animation does
-    generation += 1
-    generation_tag.innerText = `Generation ${generation}`
-    console.log(`generation in the update function`,generation)
-    setTimeout(() => {
-        update()
-    },500)
-}
+// function update() {
+//     grid = nextGenGrid(grid)
+//     renderGrid(grid)
+//     setTimeout(() => {
+//         update()
+//     },500)
+// }
 
 function renderGrid(grid) {
     for (let col = 0; col < grid.length; col++) {
