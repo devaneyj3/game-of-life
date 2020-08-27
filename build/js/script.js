@@ -3,7 +3,6 @@ let canvas = document.querySelector('.grid')
 let ctx = canvas.getContext('2d')
 
 let startBtn = document.querySelector('.start')
-let endBtn = document.querySelector('.end')
 let clearBtn = document.querySelector('.clear')
 let generation_tag = document.querySelector('.generation')
 let change_grid = document.getElementById('size')
