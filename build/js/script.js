@@ -4,9 +4,7 @@ let ctx = canvas.getContext('2d')
 
 let startBtn = document.querySelector('.start')
 let endBtn = document.querySelector('.end')
-let column = document.getElementsByClassName('column')
 let clearBtn = document.querySelector('.clear')
-let generation = 0
 let generation_tag = document.querySelector('.generation')
 
 let resolution = 40
@@ -15,39 +13,72 @@ canvas.width = 800
 
 let rows = 16
 let cols = 16
-let timeOutNum = 500
+
+let cleared = false
+let ended = false
+
 
 function buildGrid() {
     return new Array(cols).fill(null)
-        .map(() => new Array(rows).fill(null)
-        .map(() => Math.floor(Math.random() * 2)))
+    .map(() => new Array(rows).fill(null)
+    .map(() => Math.floor(Math.random() * 2)))
 }
+
 
 let grid = buildGrid()
 renderGrid(grid)
 
-    // start animating on click
+// start animating on click
 startBtn.addEventListener('click', (e) => {
-    setTimeout(() => {
-        update()
-    }, timeOutNum)
-    // make cell unclicked when you hit start button
-    for (let i = 0; i < column.length; i++) {
-        column[i].classList.add('no_click')
+    console.log(ended)
+    requestAnimationFrame(update)
+    // if I hit the clear button
+    if(cleared) {
+        grid = buildGrid()
+        renderGrid(grid)
     }
+    // make cell unclicked when you hit start button
+    // for (let i = 0; i < column.length; i++) {
+        //     column[i].classList.add('no_click')
+        // }
 })
 
+endBtn.addEventListener('click', (e) => {
+    ended = true
+    console.log(ended)
+})
+    
+clearBtn.addEventListener('click', (e) => {
+    // this shows an empty grid
+    let clearedGrid = clearGrid(grid)
+    renderGrid(clearedGrid)
+    cleared = true
+    generation = 0
+})
+        // for (let i = 0; i < column.length; i++) {
+            //     column[i].classList.remove('alive')
+            //     column[i].classList.remove('no_click')
+            // }
+
+function clearGrid(grid) {
+    for (let col = 0; col < grid.length; col++) {
+        for (let row = 0; row < grid[col].length; row++) {
+            grid[col][row] = 0
+        }
+    }
+    return grid
+}
 function update() {
+    let generation = 0
     grid = nextGenGrid(grid)
     renderGrid(grid)
-
     // TODO: generation incrementer doesn't stop when the animation does
     generation += 1
-    generation_tag.innerText = `generation ${generation}`
-
+    generation_tag.innerText = `Generation ${generation}`
+    console.log(`generation in the update function`,generation)
     setTimeout(() => {
         update()
-    }, timeOutNum)
+    },500)
 }
 
 function renderGrid(grid) {
@@ -110,11 +141,6 @@ function nextGenGrid(grid) {
         
 //     //     // })
 //     //     // clear classes on clear button click
-//     //     clearBtn.addEventListener('click', (e) => {
-//     //         for (let i = 0; i < column.length; i++) {
-//     //             column[i].classList.remove('alive')
-//     //             column[i].classList.remove('no_click')
-//     //         }
 //     //     })
 //     // }
     
