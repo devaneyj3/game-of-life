@@ -6,33 +6,55 @@ let startBtn = document.querySelector('.start')
 let endBtn = document.querySelector('.end')
 let clearBtn = document.querySelector('.clear')
 let generation_tag = document.querySelector('.generation')
+let change_grid = document.getElementById('size')
+let size_option = 'small'
+let size_changed = false
 
 let resolution = 40
 canvas.height = 800
 canvas.width = 800
 
-let rows = 16
-let cols = 16
+let rows = 16;
+let cols = 16;
 
 let cleared = false
 let ended = false
 
 let generation = 0
-function buildGrid() {
-    return new Array(cols).fill(null)
-    .map(() => new Array(rows).fill(null)
-    .map(() => Math.floor(Math.random() * 2)))
+
+function changeGridSize(rows, cols) {
+    size_option = change_grid.value;
+    size_changed = true
+    console.log('size_option in changeGridSize ', size_option)
+    if(size_option === 'large') {
+        rows = 50
+        cols = 50   
+    }
+    if(size_option === 'medium') {
+        rows = 25
+        cols = 25   
+    } else {
+        rows = 16
+        cols = 16   
+    }
 }
+let grid = buildGrid(rows, cols)
 
-
-let grid = buildGrid()
+function buildGrid(rows, cols) {
+    changeGridSize(rows, cols)
+    return new Array(cols).fill(null)
+        .map(() => new Array(rows).fill(null)
+        .map(() => Math.floor(Math.random() * 2)))
+}
 renderGrid(grid)
+
+
 // if I hit the clear button
 let incrementGeneration
 // start animating on click
 startBtn.addEventListener('click', (e) => {
     if(cleared) {
-        grid = buildGrid()
+        grid = buildGrid(rows, cols)
         renderGrid(grid)
         cleared = false
     }
@@ -83,13 +105,6 @@ function clearGrid(grid) {
     }
     return grid
 }
-// function update() {
-//     grid = nextGenGrid(grid)
-//     renderGrid(grid)
-//     setTimeout(() => {
-//         update()
-//     },500)
-// }
 
 function renderGrid(grid) {
     for (let col = 0; col < grid.length; col++) {
