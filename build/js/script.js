@@ -71,11 +71,6 @@ function displayNextGen() {
         generation += 1
         generation_tag.innerText = `Generation ${generation}`
 }
-
-endBtn.addEventListener('click', (e) => {
-    ended = true
-})
-    
 clearBtn.addEventListener('click', (e) => {
     // this shows an empty grid
     let clearedGrid = clearGrid(grid)
@@ -160,25 +155,3 @@ function nextGenGrid(grid) {
     }
     return nextGen
 }
-
-//     // // endBtn.addEventListener('click', (e) => {
-        
-//     //     // })
-//     //     // clear classes on clear button click
-//     //     })
-//     // }
-    
-//     // // user clicking the column
-//     // const configureColumn = (column) => {
-//     //     column.addEventListener('click', (e) => {
-//     //         // if you click on the cell its alive
-//     //         // TODO: toggling would be better but for some reason I could not make that work
-//     //         if( e.target.classList.contains('dead')) {
-//     //             e.target.classList.remove('dead')
-//     //             e.target.classList.add('alive')
-//     //         } else {
-//     //             e.target.classList.remove('alive')
-//     //             e.target.classList.add('dead')
-//     //         }
-//     //     })
-//     // }
