@@ -1,10 +1,6 @@
 
 body {
     margin: 1%;
-    display: flex;
-    justify-content: center;
-}
-.main {
     text-align: center;
 }
 btn {
@@ -18,17 +14,19 @@ btn:hover {
     background-color:gray
 }
 
-.col-xs {
-    padding:10px;
-    border: 1px solid black
-}
-
 .grid {
-    margin: 5% 0 5% 20%;
-    cursor: pointer;
+    margin: 0 auto;
+    display: flex;
+}
+.form {
+    display: flex;
+    justify-content: center
 }
 
-/* make element unclickable on start */
-.no_click {
-    pointer-events: none
+.generation {
+    font-weight: bold
+}
+
+input {
+    margin: 3% 0
 }

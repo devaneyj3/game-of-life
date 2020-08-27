@@ -16,12 +16,11 @@
         <h1 class="game_heading">Welcome to the game of life</h1>
         <button class="start">Start</button>
         <button class="clear">Clear</button>
-        <label for="size">Choose a size:</label>
-            <select name="size" id="size" onchange='changeGridSize()'>
-                <option value="small">16 x 16</option>
-                <option value="medium">24 x 24</option>
-                <option value="large">50 x 50</option>
-            </select>
+        <form class="form">
+            <input type="text" name='column' class='column' placeholder="Change Rows"/>
+            <input type="text" name='row' class='row' placeholder="Change Columns"/>
+            <input type="submit"></input>
+        </form>
         <span class="generation">Generation 0</span>
         <canvas class="grid"></canvas>
     </div>

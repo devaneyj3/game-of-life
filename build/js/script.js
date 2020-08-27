@@ -12,41 +12,27 @@ let size_changed = false
 let resolution = 40
 canvas.height = 800
 canvas.width = 800
+let form = document.querySelector('.form')
 
-let rows = 16;
-let cols = 16;
+
+let row = document.querySelector('.row')
+let column = document.querySelector('.column')
+let rows = 100;
+let cols = 100;
 
 let cleared = false
 let ended = false
 
 let generation = 0
 
-function changeGridSize(rows, cols) {
-    size_option = change_grid.value;
-    size_changed = true
-    console.log('size_option in changeGridSize ', size_option)
-    if(size_option === 'large') {
-        rows = 50
-        cols = 50   
-    }
-    if(size_option === 'medium') {
-        rows = 25
-        cols = 25   
-    } else {
-        rows = 16
-        cols = 16   
-    }
-}
 let grid = buildGrid(rows, cols)
 
 function buildGrid(rows, cols) {
-    changeGridSize(rows, cols)
     return new Array(cols).fill(null)
         .map(() => new Array(rows).fill(null)
         .map(() => Math.floor(Math.random() * 2)))
 }
 renderGrid(grid)
-
 
 // if I hit the clear button
 let incrementGeneration
@@ -58,6 +44,7 @@ startBtn.addEventListener('click', (e) => {
         cleared = false
     }
     incrementGeneration = setInterval(displayNextGen, 500)
+    startBtn.innerText= 'Speed Up'
     // make cell unclicked when you hit start button
     // for (let i = 0; i < column.length; i++) {
         //     column[i].classList.add('no_click')
@@ -67,6 +54,7 @@ startBtn.addEventListener('click', (e) => {
 function displayNextGen() {
         grid = nextGenGrid(grid)
         renderGrid(grid)
+        console.log(grid)
         // TODO: generation incrementer doesn't stop when the animation does
         generation += 1
         generation_tag.innerText = `Generation ${generation}`
@@ -77,6 +65,7 @@ clearBtn.addEventListener('click', (e) => {
     renderGrid(clearedGrid)
     clearInterval(incrementGeneration)
     resetTimer()
+    startBtn.innerText= 'Start'
 })
 
 function resetTimer() {
@@ -86,10 +75,7 @@ function resetTimer() {
 
     clearInterval(incrementGeneration)
 }
-        // for (let i = 0; i < column.length; i++) {
-            //     column[i].classList.remove('alive')
-            //     column[i].classList.remove('no_click')
-            // }
+
 
 function clearGrid(grid) {
     for (let col = 0; col < grid.length; col++) {
