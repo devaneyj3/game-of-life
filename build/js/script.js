@@ -31,6 +31,11 @@ renderGrid(grid)
 let incrementGeneration
 // start animating on click
 startBtn.addEventListener('click', (e) => {
+    if(cleared) {
+        grid = buildGrid()
+        renderGrid(grid)
+        cleared = false
+    }
     incrementGeneration = setInterval(displayNextGen, 500)
     // make cell unclicked when you hit start button
     // for (let i = 0; i < column.length; i++) {
@@ -44,7 +49,6 @@ function displayNextGen() {
         // TODO: generation incrementer doesn't stop when the animation does
         generation += 1
         generation_tag.innerText = `Generation ${generation}`
-        console.log(`generation in the update function`,generation)
 }
 
 endBtn.addEventListener('click', (e) => {
@@ -55,15 +59,14 @@ clearBtn.addEventListener('click', (e) => {
     // this shows an empty grid
     let clearedGrid = clearGrid(grid)
     renderGrid(clearedGrid)
-    cleared = true
     clearInterval(incrementGeneration)
     resetTimer()
 })
 
 function resetTimer() {
+    cleared = true
     generation = 0
     generation_tag.innerText = `Generation ${generation}`
-    console.log(`generation in the update function`,generation)
 
     clearInterval(incrementGeneration)
 }
