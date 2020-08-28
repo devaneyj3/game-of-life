@@ -1,60 +1,75 @@
-let container = document.querySelector('.main')
+
 let canvas = document.querySelector('.grid')
 let ctx = canvas.getContext('2d')
 
 let startBtn = document.querySelector('.start')
 let clearBtn = document.querySelector('.clear')
 let generation_tag = document.querySelector('.generation')
-let change_grid = document.getElementById('size')
-let size_option = 'small'
-let size_changed = false
+
+let colorTag = document.querySelector('.colorForm')
 
 let resolution = 40
 canvas.height = 800
 canvas.width = 800
 let form = document.querySelector('.form')
 
+let deadColor = 'white'
+let aliveColor = 'black'
 
-let row = document.querySelector('.row')
-let column = document.querySelector('.column')
 let rows = 100;
 let cols = 100;
 
+let colorBtnClicked = false
 let cleared = false
-let ended = false
 
 let generation = 0
 
-let grid = buildGrid(rows, cols)
+let intervalSpeed = 500
 
+
+if (colorBtnClicked) {
+    colorBtnClicked = false
+}
+let grid = buildGrid(rows, cols)
 function buildGrid(rows, cols) {
     return new Array(cols).fill(null)
-        .map(() => new Array(rows).fill(null)
-        .map(() => Math.floor(Math.random() * 2)))
+    .map(() => new Array(rows).fill(null)
+    .map(() => Math.floor(Math.random() * 2)))
 }
-renderGrid(grid)
-
+renderGrid(grid, aliveColor, deadColor)
 // if I hit the clear button
 let incrementGeneration
 // start animating on click
 startBtn.addEventListener('click', (e) => {
+    startBtn.disabled = true
     if(cleared) {
         grid = buildGrid(rows, cols)
-        renderGrid(grid)
+        renderGrid(grid, aliveColor, deadColor)
         cleared = false
     }
-    incrementGeneration = setInterval(displayNextGen, 500)
-    startBtn.innerText= 'Speed Up'
-    // make cell unclicked when you hit start button
-    // for (let i = 0; i < column.length; i++) {
-        //     column[i].classList.add('no_click')
-        // }
+    incrementGeneration = setInterval(displayNextGen, intervalSpeed)
 })
+let slider = document.querySelector('.slider')
+slider.oninput = function() {
+    intervalSpeed = this.value;
+}
+// change colors of the dead and alive cells
+const changeColor = (e) => {
+    let alive = document.querySelector('.alive')
+    let dead = document.querySelector('.dead')
+    
+    aliveColor = alive.value
+    deadColor = dead.value;
+    
+    e.preventDefault()
+    colorBtnClicked = true
+}
+
+colorTag.addEventListener('submit',changeColor)
 
 function displayNextGen() {
         grid = nextGenGrid(grid)
-        renderGrid(grid)
-        console.log(grid)
+        renderGrid(grid, aliveColor, deadColor)
         // TODO: generation incrementer doesn't stop when the animation does
         generation += 1
         generation_tag.innerText = `Generation ${generation}`
@@ -62,9 +77,10 @@ function displayNextGen() {
 clearBtn.addEventListener('click', (e) => {
     // this shows an empty grid
     let clearedGrid = clearGrid(grid)
-    renderGrid(clearedGrid)
+    renderGrid(clearedGrid, aliveColor, deadColor)
     clearInterval(incrementGeneration)
     resetTimer()
+    startBtn.disabled = false
     startBtn.innerText= 'Start'
 })
 
@@ -86,14 +102,15 @@ function clearGrid(grid) {
     return grid
 }
 
-function renderGrid(grid) {
+
+function renderGrid(grid, aliveColor, deadColor) {
     for (let col = 0; col < grid.length; col++) {
         for (let row = 0; row < grid[col].length; row++) {
             let cell = grid[col][row]
 
             ctx.beginPath()
             ctx.rect(col * resolution, row * resolution, resolution, resolution)
-            ctx.fillStyle = cell ? 'black': 'white'
+            ctx.fillStyle = cell ? aliveColor: deadColor
             ctx.fill()
             ctx.stroke()
         }
