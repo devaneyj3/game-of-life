@@ -37,7 +37,6 @@ function buildGrid(rows, cols) {
     .map(() => Math.floor(Math.random() * 2)))
 }
 renderGrid(grid, aliveColor, deadColor)
-// if I hit the clear button
 let incrementGeneration
 // start animating on click
 startBtn.addEventListener('click', (e) => {
