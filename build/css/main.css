@@ -8,13 +8,21 @@ body {
 .controls {
     display: flex;
     flex-direction: column;
-    height: 300px;
+    height: 450px;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
+}
+
+.interactionOutput {
+    display: flex;
+    justify-content: space-between;
+}
+.start {
+    margin-right: 5%;
 }
 btn {
     border: 1px solid black;
-    padding:5px;
+    padding:10px;
     margin: 1%;
     cursor: pointer;
 }
@@ -29,7 +37,8 @@ btn:hover {
 }
 
 .generation {
-    font-weight: bold
+    font-weight: bold;
+    width: 20%;
 }
 
 input {

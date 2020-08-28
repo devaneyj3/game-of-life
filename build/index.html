@@ -15,12 +15,9 @@
     <div class="main">
         <h1 class="game_heading">Welcome to the game of life</h1>
         <div class="controls">
-            <section class="controlBTNS">
-                <button class="start">Start</button>
-                <button class="clear">Clear</button>
-            </section>
             <div class="slidecontainer">
-                Choose the speed of the animation
+                <h3>Choose the speed of the animation</h3>
+                <p class="currentSpeed"></p>
                 <input type="range" min="100" max="500" value="500" class="slider">
                 <span class="sliderMsg"></span>
             </div>
@@ -28,11 +25,13 @@
                 <input type="text" name='alive' class='alive' placeholder="Alive Color"/>
                 <input type="text" name='dead' class='dead' placeholder="Dead Color"/>
                 <input type="submit"></input>
-                <span class='colorSpan'></span>
             </form>
+                <section class="interactionOutput">
+                    <button type="button" class="btn btn-success start">Start</button>
+                    <button type='button' class="btn btn-danger clear">Clear</button>
+                    <span class="generation">Generation 0</span>
+                </section>
         </div>
-        
-        <span class="generation">Generation 0</span>
         <canvas class="grid"></canvas>
     </div>
     <script src="js/script.js"></script>

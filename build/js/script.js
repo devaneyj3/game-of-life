@@ -40,6 +40,7 @@ renderGrid(grid, aliveColor, deadColor)
 let incrementGeneration
 // start animating on click
 startBtn.addEventListener('click', (e) => {
+    sliderMsg.innerText = ''
     startBtn.disabled = true
     if(cleared) {
         grid = buildGrid(rows, cols)
@@ -48,9 +49,17 @@ startBtn.addEventListener('click', (e) => {
     }
     incrementGeneration = setInterval(displayNextGen, intervalSpeed)
 })
+
+// change the speed of the animation in the UI
 let slider = document.querySelector('.slider')
+let sliderMsg = document.querySelector('.sliderMsg')
+let currentSpeed = document.querySelector('.currentSpeed')
+
 slider.oninput = function() {
     intervalSpeed = this.value;
+    let seconds = this.value / 100
+    currentSpeed.innerText = `Current Speed: ${seconds} sec`
+    sliderMsg.innerText = 'Clear and Restart to see modified animation speed'
 }
 // change colors of the dead and alive cells
 const changeColor = (e) => {
